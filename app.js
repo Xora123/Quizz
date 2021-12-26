@@ -57,32 +57,31 @@ function tri(array) {
 }
 
 window.addEventListener("load", async function () {
-  await copyMyData();
-
-  createAnswers(Emptytab);
-});
-
-const createAnswers = (value) => {
-  // console.log(value[0].propositions)
-  const answersDiv = document.getElementById("container");
-
-  for (let i = 0; i < value.length; i++) {
-    const QuestElement = document.createElement("h2");
-    const QuestNode = document.createTextNode(value[i].question);
-    for (let j = 0; j <= 3; j++) {
-      const answerElement = document.createElement("input");
-      answerElement.type = "radio";
-      const answerNode = document.createTextNode(value[i].propositions[j]);
-      console.log(answerNode)
+    await copyMyData();
+  
+    createAnswers(Emptytab);
+  });
+  
+  const createAnswers = (value) => {
+    // console.log(value[0].propositions)
+    const answersDiv = document.getElementById("container");
+  
+    for (let i = 0; i < value.length; i++) {
+      const QuestElement = document.createElement("h2");
+      const QuestNode = document.createTextNode(value[i].question);
+      QuestElement.appendChild(QuestNode);
+  
+      answersDiv.appendChild(QuestElement);
+  
+      for (let j = 0; j <= 3; j++) {
+        const answerElement = document.createElement("input");
+        answerElement.type = 'radio';
+  
+        const answerNode = document.createTextNode(value[i].propositions[j]);
+        answerElement.appendChild(answerNode);
+  
+        answersDiv.appendChild(answerElement);
+      }
     }
-
-    QuestElement.appendChild(QuestNode);
-
-    answersDiv.appendChild(QuestElement);
-
-    answerElement.appendChild(answerNode);
-
-    answersDiv.appendChild(answerElement);
-  }
-  return answersDiv.textContent;
-}
+    return answersDiv.textContent;
+  };
