@@ -10,7 +10,7 @@ async function getData() {
   return data.quizz.fr.débutant;
 }
 const copyMyData = async (data) => {
-  const FillTab = await getData(data.quizz.fr.débutant);
+  const FillTab = await getData(data);
   Emptytab.push(FillTab);
 
   return Emptytab;
