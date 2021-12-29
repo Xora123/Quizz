@@ -13,11 +13,21 @@ body{
 }
 
 h1{
-    display: flex;
-    justify-content: space-evenly;
-    font-size:45px;
+
     color:olivedrab;
 }
+
+#container{
+    text-align:  center;
+    color: blue;
+    border: 5px solid black;;
+}
+
+h2{
+    color: brown ;
+    font-size: 25px;
+}
+
 
 p{
     display: flex;
@@ -31,4 +41,13 @@ p{
     margin-left: auto !important;
     margin-right: auto !important;
     width: 40%;
+}
+
+
+.btn.correct{
+    --hue: var(--hue-correct);
+    color: brown;
+}
+.btn.wrong{
+    --hue: var(--hue-wrong);
 }

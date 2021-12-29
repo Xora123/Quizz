@@ -2,8 +2,8 @@ const url = "https://xora123.github.io/Kélian.json"; // url de mon fichier JSON
 
 var Emptytab = []; // Création d'un tableau vide pour mettre mes data dedans
 
-// Fonction pour prendre les data de mon fichier JSON
 async function getData() {
+  // Fonction pour prendre les data de mon fichier JSON
   const responce = await fetch(url);
   const data = await responce.json();
 
@@ -11,6 +11,7 @@ async function getData() {
   return data.quizz.fr.débutant;
 }
 const copyMyData = async (data) => {
+  // Fonction Pour remplir mon Tab vide pour pouvoir l'utiliser partout
   const FillTab = await getData(data);
   Emptytab.push(...FillTab);
 
@@ -19,18 +20,8 @@ const copyMyData = async (data) => {
 
 const container = document.getElementById("container");
 
-function createQuestion() {
-  const NewDiv = document.getElementById("question");
-
-  const NewText = document.createTextNode("Question");
-
-  NewDiv.appendChild(NewText);
-
-  console.log(NewDiv);
-  return NewDiv;
-}
-
 function tri(array) {
+  // Fonction pour shuffle le Tab.
   var a;
   var b;
   var temp;
@@ -57,31 +48,67 @@ function tri(array) {
 }
 
 window.addEventListener("load", async function () {
-    await copyMyData();
-  
-    createAnswers(Emptytab);
-  });
-  
-  const createAnswers = (value) => {
-    // console.log(value[0].propositions)
-    const answersDiv = document.getElementById("container");
-  
-    for (let i = 0; i < value.length; i++) {
-      const QuestElement = document.createElement("h2");
-      const QuestNode = document.createTextNode(value[i].question);
-      QuestElement.appendChild(QuestNode);
-  
-      answersDiv.appendChild(QuestElement);
-  
-      for (let j = 0; j <= 3; j++) {
-        const answerElement = document.createElement("input");
-        answerElement.type = 'radio';
-  
-        const answerNode = document.createTextNode(value[i].propositions[j]);
-        answerElement.appendChild(answerNode);
-  
-        answersDiv.appendChild(answerElement);
-      }
+  await copyMyData();
+
+  createAnswers(Emptytab);
+});
+
+const createAnswers = (value) => {
+  const answersDiv = document.getElementById("container");
+
+  for (let i = 0; i < value.length - 10; i++) {
+    var score = 0;
+    const QuestElement = document.createElement("h2"); // Ici on crée toute les question en fonction la taille de value, ici 30 - 10 (-10 pour pas que ce soit les mêmes questions)
+    const QuestNode = document.createTextNode(value[i].question); // Ici on crée un textnode pour mettre les questions dans h2
+    QuestElement.appendChild(QuestNode); // Ici on le fait spawn
+
+    answersDiv.appendChild(QuestElement);
+
+    for (let j = 0; j <= 3; j++) {
+      // Ici c'est pour crée les Propositions pour chaque questions
+      const answerElement = document.createElement("input"); // On crée un input
+      answerElement.id = "salut" + j;
+      answerElement.value = j;
+      answerElement.type = "radio"; // le Type = radio
+      answerElement.name = "input";
+      answerElement.classList = "input";
+
+      const CreateLabel = document.createElement("label"); // On crée le label pour les inputs
+      CreateLabel.classList = "Label";
+      CreateLabel.name = "input";
+
+      CreateLabel.setAttribute("for", "salut" + j); // Ici on le setUnAttribut
+      const answerNode = document.createTextNode(value[i].propositions[j]); // On crée le TextNode
+     
+      answerElement.addEventListener("click", () => { // Evénement pour mettre une couleur si c'est juste ou faux
+      
+        CreateLabel.style.backgroundColor = "white"; // On set le style a blanc de base
+        if (value[i].propositions[j] == value[i].réponse) {
+
+          CreateLabel.style.backgroundColor = "green"; // On set le style a green quand c'est juste
+          
+          answerElement.disabled = true;
+
+          const anecdoteElement = document.createElement("p");
+          const anecdoteNode = document.createTextNode(value[i].anecdote); // Crée l'anecdote quand c'est juste
+
+          anecdoteElement.appendChild(anecdoteNode);
+          CreateLabel.appendChild(anecdoteElement);
+
+        } else {
+          CreateLabel.style.backgroundColor = "red";  // On set le style a green quand c'est juste
+          answerElement
+        }
+      });
+
+      CreateLabel.appendChild(answerNode); // On fou AnswerNode dans label
+
+      answersDiv.appendChild(CreateLabel); // On fou Label dans le Container
+
+      answersDiv.appendChild(answerElement); // On fou Element Dans le container aussi
     }
-    return answersDiv.textContent;
-  };
+  }
+  return answersDiv;
+};
+
+// HELP \\ // HELP \\ // HELP \\ // HELP \\ // HELP \\ // HELP \\ // HELP \\
