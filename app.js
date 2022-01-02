@@ -1,4 +1,6 @@
 const url = "https://xora123.github.io/Kélian.json"; // url de mon fichier JSON
+const username = document.getElementById("username")
+const saveScoreBtn =document.getElementById("username")
 
 var Emptytab = []; // Création d'un tableau vide pour mettre mes data dedans
 
@@ -54,15 +56,20 @@ window.addEventListener("load", async function () {
 });
 
 const createAnswers = (value) => {
+ 
   const answersDiv = document.getElementById("container");
 
-  for (let i = 0; i < value.length - 10; i++) {
-    var score = 0;
+
+  for (let i = 0; i < value.length - 20; i++) {
+    const div = document.createElement("div")
+    div.classList.add('questionContainer');
     const QuestElement = document.createElement("h2"); // Ici on crée toute les question en fonction la taille de value, ici 30 - 10 (-10 pour pas que ce soit les mêmes questions)
     const QuestNode = document.createTextNode(value[i].question); // Ici on crée un textnode pour mettre les questions dans h2
     QuestElement.appendChild(QuestNode); // Ici on le fait spawn
 
-    answersDiv.appendChild(QuestElement);
+    div.appendChild(QuestElement);
+
+    answersDiv.appendChild(div)
 
     for (let j = 0; j <= 3; j++) {
       // Ici c'est pour crée les Propositions pour chaque questions
@@ -70,45 +77,81 @@ const createAnswers = (value) => {
       answerElement.id = "salut" + j;
       answerElement.value = j;
       answerElement.type = "radio"; // le Type = radio
-      answerElement.name = "input";
+
+      const nameRadios = () => {  // Collect all radios into an array
+        const allRadios = [...document.querySelectorAll(`[type='radio']`)];// Each set of 4 radios get a unique name
+        for (let i = 0; i < allRadios.length; i++) {
+          let q = Math.floor(i / 4);
+          allRadios[i].name = `rad${q}`;
+        }
+      };
+      nameRadios();
       answerElement.classList = "input";
 
       const CreateLabel = document.createElement("label"); // On crée le label pour les inputs
       CreateLabel.classList = "Label";
       CreateLabel.name = "input";
+      var score = 0;                            // Variable pour compter le nombre de réponses justes
 
       CreateLabel.setAttribute("for", "salut" + j); // Ici on le setUnAttribut
       const answerNode = document.createTextNode(value[i].propositions[j]); // On crée le TextNode
-     
-      answerElement.addEventListener("click", () => { // Evénement pour mettre une couleur si c'est juste ou faux
       
+      answerElement.addEventListener("click", () => { // Evénement pour mettre une couleur si c'est juste ou faux
+
         CreateLabel.style.backgroundColor = "white"; // On set le style a blanc de base
         if (value[i].propositions[j] == value[i].réponse) {
-
           CreateLabel.style.backgroundColor = "green"; // On set le style a green quand c'est juste
-          
-          answerElement.disabled = true;
-
+          document.querySelectorAll(`[name=${answerElement.name}]`) // Quand on click sur une propostions on set les autres en disabled
+            .forEach((otherAnswer) => {
+              otherAnswer.disabled = true;
+            });
+           localStorage.setItem("score", score++)
+            score.innerhtml
           const anecdoteElement = document.createElement("p");
-          const anecdoteNode = document.createTextNode(value[i].anecdote); // Crée l'anecdote quand c'est juste
 
+          const anecdoteNode = document.createTextNode(value[i].anecdote); // Crée l'anecdote quand c'est juste
+           anecdoteElement.style.backgroundColor ="none"
           anecdoteElement.appendChild(anecdoteNode);
           CreateLabel.appendChild(anecdoteElement);
-
         } else {
-          CreateLabel.style.backgroundColor = "red";  // On set le style a green quand c'est juste
-          answerElement
+          CreateLabel.style.backgroundColor = "red"; // On set le style a green quand c'est juste
+          document.querySelectorAll(`[name=${answerElement.name}]`)   // Quand on click sur une propostions on set les autres en disabled
+          .forEach((otherAnswer) => {
+            otherAnswer.disabled = true;
+          });
         }
       });
 
       CreateLabel.appendChild(answerNode); // On fou AnswerNode dans label
 
-      answersDiv.appendChild(CreateLabel); // On fou Label dans le Container
+      div.appendChild(CreateLabel); // On fou Label dans le Container
 
-      answersDiv.appendChild(answerElement); // On fou Element Dans le container aussi
+      div.appendChild(answerElement); // On fou Element Dans le container aussi
+
+      answersDiv.appendChild(div)
+
     }
   }
-  return answersDiv;
+  return   {
+    answersDiv
+  }
 };
+
+const storedValue = localStorage.getItem("names");
+console.log(storedValue) 
+var start = document.getElementById("start")
+
+start.addEventListener("click", () =>{
+  const name = document.getElementById("myinput").value
+  localStorage.setItem('names', name)
+  console.log(name)
+})
+
+
+var end = document.getElementById("end")
+
+end.addEventListener("click", () => {
+  localStorage.setItem('score', score)
+})
 
 // HELP \\ // HELP \\ // HELP \\ // HELP \\ // HELP \\ // HELP \\ // HELP \\

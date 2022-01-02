@@ -1,7 +1,6 @@
 body{
     margin: 0;
     padding: 0;
-    background-color: rgb(204, 127, 127)
 }
 .nav-el{
     display: flex;
@@ -13,14 +12,13 @@ body{
 }
 
 h1{
-
+    text-align: center;
     color:olivedrab;
 }
 
 #container{
     text-align:  center;
     color: blue;
-    border: 5px solid black;;
 }
 
 h2{
@@ -36,6 +34,16 @@ p{
     color:blue;
 }
 
+#imgdiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn1{
+    margin-top: 30px;
+}
 .img{
     display: flex;
     margin-left: auto !important;
@@ -44,10 +52,33 @@ p{
 }
 
 
-.btn.correct{
-    --hue: var(--hue-correct);
-    color: brown;
+.btn{
+    margin-top: 30px;
+    width: 130px;
 }
-.btn.wrong{
-    --hue: var(--hue-wrong);
+
+#wrapper {
+    margin-top: 40px;
+    padding-bottom: 40px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .questionContainer {
+    padding: 30px;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+  }
+
+#myinput{
+    margin-top: 20px;
 }
