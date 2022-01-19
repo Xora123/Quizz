@@ -2,6 +2,8 @@ const url = "https://xora123.github.io/Kélian.json"; // url de mon fichier JSON
 
 var Emptytab = []; // Création d'un tableau vide pour mettre mes data dedans
 
+Stockage= localStorage;
+
 async function getData() { // Fonction pour prendre les data de mon fichier JSON
   const responce = await fetch(url);
   const data = await responce.json();
@@ -52,6 +54,7 @@ window.addEventListener("load", async function () {
   createAnswers(Emptytab);
   var res = document.getElementById("end")
   res.addEventListener("click" , Resolve) 
+ 
 });
 
 const createAnswers = (value) => {
@@ -135,6 +138,13 @@ var score = 0;
 
 // Fonction pour avoir son score final qui s'affiche a fin! 
 function Resolve() {
+
+  nom = prompt("Veuillez entrez votre nom")
+  document.getElementById("titreNom").innerText = "Bienvenue sur le quizz " + nom;
+
+
+  
+
   var Check = [];
   
   Check = document.querySelectorAll("input:checked"); // Récuper les inputs qui ont étaient selectionés 
@@ -143,9 +153,54 @@ function Resolve() {
     if (Check[i].value == Emptytab[i].réponse){ // Si l'input selectioné corresponds a la réponse, alors on incrémente le score
       score++;
     }
-    console.log(Check.length) 
-  document.getElementById("ScoreFinal").innerText = "Votre score est de : " + score + "/" +(Check.length); // Affichage du Score
-  document.body.scrollTop = 0; // Score final en haut de la page
-  document.documentElement.scrollTop = 0;
 }
+document.getElementById("ScoreFinal").innerText = "Votre score est de " +  score;
+document.body.scrollTop = 0; // Score final en haut de la page
+document.documentElement.scrollTop = 0;
+  // Creation du Tab pour le localStorage
+  var obj = {
+    nom: nom,
+    score: score
+  }
+  
+  var scores = JSON.parse(localStorage.getItem("users"));
+  
+  console.log(scores)
+  if(scores === null){
+  scores = [];
+  }
+  
+  
+  scores.push(obj)
+  
+  localStorage.setItem("users", JSON.stringify(scores))
+  
+  scores.sort((a,b) => b.score - a.score)
+  
+  for (let i = 0; i < 5 ; i++){
+   
+      div = document.getElementById("tablo")
+      var c = document.createElement("p")
+
+      c.style.color = "green";
+      const cNode = document.createTextNode( "Nom: " + (scores[i].nom)+ "     Score: ")
+      const dNode = document.createTextNode(scores[i].score)
+      console.log(scores[i].nom)
+      
+      c.appendChild(cNode)
+      c.appendChild(dNode)
+      div.appendChild(c)
+        
+      } 
+  
+  }
+
+// Button delete LocalStorage 
+const  deleteBtn = document.getElementById("button")
+
+function clear(Stockage){
+
+ localStorage.clear(Stockage)
 }
+
+deleteBtn.addEventListener("click", clear)
